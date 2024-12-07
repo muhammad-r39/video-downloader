@@ -12,6 +12,7 @@ COPY . /app
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -U yt-dlp
 
 # Expose port 8080 for Cloud Run
 EXPOSE 8080

@@ -19,9 +19,16 @@ def get_formats():
         if not url:
             return jsonify({"error": "URL is required"}), 400
 
-        ydl_opts = {
-            'noplaylist': True,  # Process individual videos only
-        }
+        ydl_opts = {}
+
+        # Add Instagram authentication if URL is from Instagram
+        if 'instagram.com' in url:
+            try:
+                ydl_opts.update({
+                    'cookiefile': 'instagram_cookies.txt',
+                })
+            except KeyError as e:
+                return jsonify({"error": f"Instagram extractor error: {str(e)}"}), 500
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
